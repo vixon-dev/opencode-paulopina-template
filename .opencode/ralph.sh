@@ -44,7 +44,7 @@ exit_code=$?
 
 # Notify only on success (exit 0)
 if [ "$exit_code" = "0" ]; then
-  "$ROOT_DIR/.opencode/notify.sh" "OpenCode: done" "Ralph loop finished: ${PROMPT}" || true
+  "$ROOT_DIR/.opencode/notify.sh" "done" "Ralph loop finished: ${PROMPT}" high "heavy_check_mark,robot" || true
 fi
 
 exit "$exit_code"

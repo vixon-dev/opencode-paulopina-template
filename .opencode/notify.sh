@@ -4,16 +4,26 @@ set -euo pipefail
 # ntfy.sh notification helper.
 #
 # Usage:
-#   ./.opencode/notify.sh "Title" "Message"
+#   ./.opencode/notify.sh "<type>" "<message>" [priority] [tags]
+#
+# Examples:
+#   ./.opencode/notify.sh "done" "Deploy finished" high "heavy_check_mark,rocket"
+#   ./.opencode/notify.sh "need_input" "Please approve the plan" urgent "warning,robot"
 #
 # Config:
 #   NTFY_TOPIC in .opencode/.env
+#
+# Notes:
+# - ntfy supports Title/Priority/Tags headers.
+# - Tags can be emoji shortcodes (e.g. warning, robot, heavy_check_mark).
 
-TITLE="${1:-}"
-TEXT="${2:-}"
+TYPE="${1:-}"
+MESSAGE="${2:-}"
+PRIORITY="${3:-default}"
+TAGS="${4:-robot}"
 
-if [ -z "$TITLE" ] || [ -z "$TEXT" ]; then
-  echo "usage: $0 \"<title>\" \"<message>\"" >&2
+if [ -z "$TYPE" ] || [ -z "$MESSAGE" ]; then
+  echo "usage: $0 \"<type>\" \"<message>\" [priority] [tags]" >&2
   exit 1
 fi
 
@@ -29,8 +39,12 @@ if [ -z "${NTFY_TOPIC:-}" ]; then
   exit 0
 fi
 
-# Uses x-www-form-urlencoded fields.
-/usr/bin/curl -fsS -X POST "https://ntfy.sh/${NTFY_TOPIC}" \
-  -d "title=${TITLE}" \
-  -d "message=${TEXT}" \
+TITLE="OpenCode"
+BODY="[${TYPE}] ${MESSAGE}"
+
+/usr/bin/curl -fsS "https://ntfy.sh/${NTFY_TOPIC}" \
+  -H "Title: ${TITLE}" \
+  -H "Priority: ${PRIORITY}" \
+  -H "Tags: ${TAGS}" \
+  -d "${BODY}" \
   >/dev/null 2>&1 || true

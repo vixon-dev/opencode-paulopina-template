@@ -48,7 +48,11 @@
 
 ## Human-in-the-loop notifications (ntfy.sh)
 - If you need the user's attention (blocking question, important status, handoff), send a notification via:
-  - `!./.opencode/notify.sh "<title>" "<message>"`
+  - `!./.opencode/notify.sh "need_input" "<message>" urgent "warning,robot"`
+- For non-blocking status updates you want the user to see:
+  - `!./.opencode/notify.sh "status" "<message>" default "robot"`
+- For completion notifications:
+  - `!./.opencode/notify.sh "done" "<message>" high "heavy_check_mark"`
 - The notification uses `NTFY_TOPIC` from `.opencode/.env` (do not hardcode topics/URLs in repo files).
 - After notifying for a blocking issue:
   - Ask EXACTLY ONE question and then stop.

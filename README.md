@@ -158,7 +158,7 @@ Standard pattern: always use `./.opencode/notify.sh` (it reads `NTFY_TOPIC` from
 Manual usage:
 
 ```bash
-./.opencode/notify.sh "Processo finalizado" "Precisa checar algo!"
+./.opencode/notify.sh "status" "Precisa checar algo!" default "robot"
 ```
 
 `./.opencode/ralph.sh` uses this same helper automatically on successful completion.
