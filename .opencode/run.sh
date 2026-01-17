@@ -19,6 +19,13 @@ if [ ! -f "$OPENCODE_DIR/.env" ]; then
   fi
 fi
 
+# If this template README was copied to root, move it back
+# (keeps project root clean, but still ships a top-level README in this repo)
+if [ -f "$ROOT_DIR/README.md" ] && [ ! -f "$OPENCODE_DIR/README.md" ]; then
+  mv "$ROOT_DIR/README.md" "$OPENCODE_DIR/README.md"
+  echo "Moved $ROOT_DIR/README.md to $OPENCODE_DIR/README.md" >&2
+fi
+
 # Bootstrap AGENTS.md in project root
 # - If missing: create from template
 # - If present: ensure it mentions the template so a new repo doesn't lose conventions
