@@ -68,9 +68,15 @@ Everything is centralized under `.opencode/` so the project root stays clean.
 These MCPs are configured **globally** in `~/.config/opencode/opencode.json`. This template only provides the **project-local wiring** (env vars + folders under `.opencode/`).
 
 If the MCP servers are not installed/working yet on your machine, do this first:
-- Ensure **Node.js 20+** is installed (so `npx` works).
+- Ensure you have a JS runtime available:
+  - **Node.js 20+** (recommended) so `npx` works, or
+  - **Bun** so `bunx` works: https://bun.sh
 - Run `./.opencode/run.sh mcp list` to see what is available.
-- Note: most local MCPs here run via `npx -y ...` so the first run will download the package automatically.
+- Note: most local MCPs here run via `npx -y ...` (or `bunx --yes ...`) so the first run will download the package automatically.
+
+Switching from `npx` to `bunx` (global config):
+- Edit `~/.config/opencode/opencode.json` and replace MCP `command` entries like `"npx", "-y", "<pkg>"` with `"bunx", "--yes", "<pkg>"`.
+- Some MCP packages may still require Node-specific behavior; if you hit issues, revert to Node for that MCP.
 
 Per-server references (install/docs):
 - `playwright` — browser automation
