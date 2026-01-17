@@ -65,16 +65,31 @@ Everything is centralized under `.opencode/` so the project root stays clean.
 
 ## MCP servers (expected)
 
-These MCPs are configured **globally** in `~/.config/opencode/opencode.json`, but are enabled and parameterized per project via `.opencode/.env`:
+These MCPs are configured **globally** in `~/.config/opencode/opencode.json`. This template only provides the **project-local wiring** (env vars + folders under `.opencode/`).
 
+If the MCP servers are not installed/working yet on your machine, do this first:
+- Ensure **Node.js 20+** is installed (so `npx` works).
+- Run `./.opencode/run.sh mcp list` to see what is available.
+- Note: most local MCPs here run via `npx -y ...` so the first run will download the package automatically.
+
+Per-server references (install/docs):
 - `playwright` — browser automation
+  - MCP package: https://www.npmjs.com/package/@playwright/mcp
+  - Playwright install docs: https://playwright.dev/docs/intro
 - `n8n` — workflow listing/triggering
-- `context7` — documentation lookup
-- `openapi` — OpenAPI catalog discovery (uses `.opencode/openapi/` + caches)
-- `postgres` — Postgres read-only querying (via connection string)
+  - MCP package: https://www.npmjs.com/package/@pagelines/n8n-mcp
+  - n8n API auth docs: https://docs.n8n.io/api/authentication/
+- `context7` — up-to-date documentation lookup
+  - Docs + API key: https://context7.com/docs
+  - Install: https://github.com/upstash/context7#installation
+- `openapi` — OpenAPI catalog discovery (reads `.opencode/openapi/`)
+  - MCP package: https://www.npmjs.com/package/@reapi/mcp-openapi
+- `postgres` — Postgres read-only querying (connection string only)
+  - MCP package: https://www.npmjs.com/package/mcp-postgres
 - `redis` — Redis inspection (writes disabled by default)
+  - MCP package: https://www.npmjs.com/package/@liangshanli/mcp-server-redis
 
-If you copy this template to a new machine, you still need the global `opencode.json` with MCP definitions. This template provides the project-local env/structure.
+If you copy this template to a new machine, you still need the global `opencode.json` with these MCP definitions (or add them via `opencode mcp add`).
 
 ---
 
