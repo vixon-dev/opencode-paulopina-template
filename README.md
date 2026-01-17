@@ -6,7 +6,7 @@ This repository includes a reusable **OpenCode (opencode)** project template, de
 - A consistent `AGENTS.md` rules baseline
 - Project-local **Skills** (`.opencode/skill/*/SKILL.md`)
 - Project-local **Commands** (`.opencode/command/*.md`)
-- A Ralph-style long-running loop runner (`.opencode/ralph.sh`)
+- A Ralph loop runner that uses Th0rgal's `ralph` CLI (`.opencode/ralph.sh`)
 - OpenAPI tooling directories and caches
 
 Everything is centralized under `.opencode/` so the project root stays clean.
@@ -25,7 +25,8 @@ Everything is centralized under `.opencode/` so the project root stays clean.
 - `.opencode/_catalog/` — OpenAPI MCP cache
 - `.opencode/_dereferenced/` — OpenAPI MCP dereferenced cache
 - `.opencode/logs/` — MCP logs (ex: Redis MCP)
-- `.opencode/state/` — loop state (Ralph)
+- `.opencode/ralph.sh` — wrapper around Th0rgal's `ralph` CLI
+- `.opencode/notify.sh` — ntfy.sh notification helper (optional)
 
 ---
 
@@ -119,55 +120,54 @@ Located in `.opencode/command/*.md`.
 
 - `/smoke-helpdesk` — identify core helpdesk endpoints to implement/test first
 - `/smoke-webhooks` — webhook validation checklist
-- `/ralph-loop` — internal command used by `.opencode/ralph.sh`
+(no Ralph-specific slash command; loop runs via the `ralph` CLI)
 
 ---
 
-## Ralph-style loop (long running)
+## Ralph loop (long running)
 
-This is the closest equivalent to the Claude Code "Ralph" technique without needing an OpenCode plugin.
+This template delegates Ralph looping to Th0rgal's CLI-only implementation: `@th0rgal/ralph-wiggum`.
 
-### How it works
-- `.opencode/ralph.sh` runs `opencode run` repeatedly.
-- It reuses the **same session** across iterations (stored in `.opencode/state/ralph.session`).
-- The agent reads/writes a persistent state file: `.opencode/state/ralph.md`.
-- The loop stops only when the model prints exactly: `<promise>DONE</promise>`.
+### Install (global)
 
-### Notifications (Pushcut)
-The loop supports two optional HTTP GET notifications (configured in `.opencode/.env`):
-- `RALPH_NOTIFY_PAUSED_URL`: called when the agent needs human input.
-- `RALPH_NOTIFY_DONE_URL`: called when the loop completes.
+```bash
+npm install -g @th0rgal/ralph-wiggum
+# or
+bun add -g @th0rgal/ralph-wiggum
+```
 
-Behavior:
-- When the agent needs you, it will:
-  1) GET `RALPH_NOTIFY_PAUSED_URL`
-  2) print `<pause>NEED_INPUT</pause>`
-  3) ask one question and stop
-- When the loop completes, the wrapper script GETs `RALPH_NOTIFY_DONE_URL` and exits 0.
+### Run a loop
 
-### Usage
-- `./.opencode/ralph.sh "Build feature X with tests" 50`
+```bash
+./.opencode/ralph.sh "Build feature X with tests" 50
+```
 
-Exit codes:
-- `0`: completed (`<promise>DONE</promise>`)
-- `2`: max iterations reached
-- `3`: paused for human input (`<pause>NEED_INPUT</pause>`)
+This wrapper runs `ralph` in the project root so it can persist its state under `.opencode/`.
 
-Files:
-- `.opencode/ralph.sh`
-- `.opencode/command/ralph-loop.md`
-- `.opencode/state/ralph.session`
-- `.opencode/state/ralph.md`
+### Monitor / add hints
 
-Tips:
-- Always set a max iteration count (2nd argument).
-- Make prompts include verifiable criteria (tests, lint, build).
+```bash
+ralph --status
+ralph --add-context "Focus on fixing auth first"
+```
+
+### Notifications (ntfy.sh)
+
+Standard pattern: always use `./.opencode/notify.sh` (it reads `NTFY_TOPIC` from `.opencode/.env`).
+
+Manual usage:
+
+```bash
+./.opencode/notify.sh "Processo finalizado" "Precisa checar algo!"
+```
+
+`./.opencode/ralph.sh` uses this same helper automatically on successful completion.
 
 ---
 
 ## Notes / best practices
 
-- Ralph loop notifications require `curl` (available by default on macOS).
+- ntfy.sh notifications use `curl` (available by default on macOS).
 
 - Keep `.opencode/.env` out of git.
 - Keep OpenAPI specs in `.opencode/openapi/`.

@@ -46,6 +46,13 @@
 - `/smoke-helpdesk`: identify the core helpdesk endpoints to implement/test.
 - `/smoke-webhooks`: checklist for webhook validation (Chatwoot + Evolution).
 
+## Human-in-the-loop notifications (ntfy.sh)
+- If you need the user's attention (blocking question, important status, handoff), send a notification via:
+  - `!./.opencode/notify.sh "<title>" "<message>"`
+- The notification uses `NTFY_TOPIC` from `.opencode/.env` (do not hardcode topics/URLs in repo files).
+- After notifying for a blocking issue:
+  - Ask EXACTLY ONE question and then stop.
+
 ## Conventions
 - Keep all project secrets in `.opencode/.env` (gitignored).
 - Keep OpenAPI specs in `.opencode/openapi/`.

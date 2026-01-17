@@ -1,12 +1,18 @@
 # Dependencies
 node_modules/
 
+# Template-local installs (do not commit)
+package.json
+bun.lock
+
 # Secrets
 .env
 
-# Runtime/state artifacts
-state/ralph.session
-state/ralph.md
+# Ralph Wiggum CLI state (Th0rgal)
+ralph-loop.state.json
+ralph-history.json
+ralph-context.md
+ralph-opencode.config.json
 
 # Logs (keep .gitkeep)
 logs/*.log
