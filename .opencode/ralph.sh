@@ -27,6 +27,14 @@ set -a
 . "$ROOT_DIR/.opencode/.env"
 set +a
 
+if ! command -v ralph >/dev/null 2>&1; then
+  echo "Missing 'ralph' CLI. Install it first:" >&2
+  echo "  npm install -g @th0rgal/ralph-wiggum" >&2
+  echo "  # or" >&2
+  echo "  bun add -g @th0rgal/ralph-wiggum" >&2
+  exit 127
+fi
+
 # Run ralph in project root so it writes .opencode state files there
 (
   cd "$ROOT_DIR"
