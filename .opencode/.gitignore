@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Secrets
+.env
+
+# Runtime/state artifacts
+state/ralph.session
+state/ralph.md
+
+# Logs (keep .gitkeep)
+logs/*.log
+
+# OpenAPI caches (generated)
+_catalog/
+_dereferenced/
+
+# Misc
+.DS_Store

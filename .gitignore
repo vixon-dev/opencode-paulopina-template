@@ -1,0 +1,7 @@
+.DS_Store
+
+# Local runtime logs (outside template)
+logs/
+
+# If someone creates it at root (should live in .opencode)
+.env
