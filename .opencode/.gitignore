@@ -8,12 +8,6 @@ bun.lock
 # Secrets
 .env
 
-# Ralph Wiggum CLI state (Th0rgal)
-ralph-loop.state.json
-ralph-history.json
-ralph-context.md
-ralph-opencode.config.json
-
 # Logs (keep .gitkeep)
 logs/*.log
 

@@ -5,3 +5,6 @@ logs/
 
 # If someone creates it at root (should live in .opencode)
 .env
+
+# Ralphy runtime config (created by --init)
+.ralphy/

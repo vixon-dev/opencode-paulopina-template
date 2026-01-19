@@ -39,7 +39,12 @@ if [ -z "${NTFY_TOPIC:-}" ]; then
   exit 0
 fi
 
-TITLE="OpenCode"
+# Use Ralphy title if called from ralphy context
+if [ -n "${RALPHY_CONTEXT:-}" ]; then
+  TITLE="Ralphy"
+else
+  TITLE="OpenCode"
+fi
 BODY="[${TYPE}] ${MESSAGE}"
 
 /usr/bin/curl -fsS "https://ntfy.sh/${NTFY_TOPIC}" \

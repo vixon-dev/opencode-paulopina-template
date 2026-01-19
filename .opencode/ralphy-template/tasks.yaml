@@ -1,0 +1,27 @@
+# YAML Task Format for Ralphy
+# Use this instead of PRD.md for more control over task execution
+# Run with: ./.opencode/ralphy.sh --yaml tasks.yaml
+
+tasks:
+  # Basic tasks (run sequentially)
+  - title: "Task 1 description"
+    completed: false
+  
+  - title: "Task 2 description"
+    completed: false
+
+  # Parallel groups: tasks with same parallel_group run concurrently
+  # Use --parallel flag to enable
+  #
+  # Example: Database models can be created in parallel
+  # - title: "Create User model"
+  #   completed: false
+  #   parallel_group: 1
+  #
+  # - title: "Create Post model"
+  #   completed: false
+  #   parallel_group: 1
+  #
+  # - title: "Add relationships between models"
+  #   completed: false
+  #   parallel_group: 2  # Runs after group 1 completes
